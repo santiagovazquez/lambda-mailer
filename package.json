@@ -1,0 +1,37 @@
+{
+  "name": "lambda-mailer",
+  "version": "1.0.0",
+  "description": "Lambda function to send emails",
+  "main": "index.js",
+  "scripts": {
+    "start": "sls offline start",
+    "deploy": "sls deploy -v --stage prod",
+    "remove": "sls remove --stage prod",
+    "logs": "sls logs -f mailerFn -l",
+    "test": "node test/fake-notification.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/santiagovazquez/lambda-mailer.git"
+  },
+  "author": "Santiago Vázquez",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/santiagovazquez/lambda-mailer/issues"
+  },
+  "homepage": "https://github.com/santiagovazquez/lambda-mailer#readme",
+  "dependencies": {
+    "aws-sdk": "^2.361.0",
+    "email-templates": "5.0.2",
+    "nodemailer": "^4.7.0",
+    "nodemailer-base64-to-s3": "0.0.4",
+    "pug": "^2.0.3",
+    "serverless-pseudo-parameters": "^2.4.0"
+  },
+  "devDependencies": {
+    "js-yaml": "^3.13.1",
+    "serverless": "^1.41.1",
+    "serverless-offline": "^4.9.4",
+    "serverless-offline-sns": "^0.53.0"
+  }
+}

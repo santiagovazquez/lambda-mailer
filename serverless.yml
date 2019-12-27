@@ -1,0 +1,54 @@
+service: lambda-mailer # NOTE: update this with your service name
+
+plugins:
+  - serverless-offline-sns
+  - serverless-offline
+  - serverless-pseudo-parameters
+
+custom:
+  stage: ${opt:stage, 'dev'}
+  bucketName: ${self:service}-${self:provider.stage}-deploy # build bucket name with stage
+  topicName: ${self:service}-sns-mail-notification-${self:custom.stage}
+  topicArn: arn:aws:sns:${self:provider.region}:#{AWS::AccountId}:${self:custom.topicName}
+  emailFrom: "YourCompanyName <no-reply@yourdomain.com>"
+  region: us-west-2
+  nodeEnv:
+    dev: development
+    other: production
+  serverless-offline-sns:
+    port: 4002
+    debug: true
+    sns-endpoint: http://127.0.0.1:4002 # Optional. Only if you want to use a custom endpoint
+
+provider:
+  name: aws
+  runtime: nodejs10.x
+  region: ${self:custom.region} # using same region for SNS and Lambda Function
+  versionFunctions: false
+  stage: ${self:custom.stage}
+  environment: # Service wide environment variables
+    TOPIC_NAME: ${self:custom.topicName}
+    S3_BUCKET: bucket-to-store-email-images
+    EMAIL_FROM: ${self:custom.emailFrom}
+    NODE_ENV: ${self:custom.nodeEnv.${self:provider.stage}, self:custom.nodeEnv.other}
+
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "ses:*"
+      Resource: "*"
+    - Effect: "Allow"
+      Action: "s3:*"
+      Resource: "*"
+
+functions:
+  mailerFn:
+    handler: index.handler
+    memorySize: 256 # optional, in MB, default is 1024
+    timeout: 20 # optional, in seconds, default is 6
+    events:
+      - sns: ${self:custom.topicName}
+    onError: arn:aws:sns:#{AWS::Region}:#{AWS::AccountId}:errors-topic
+    environment:
+      TOPIC_ARN: { "Fn::Join": ["", ["arn:aws:sns:${self:custom.region}:", { "Ref": "AWS::AccountId" }, ":${self:custom.topicArn}" ] ]  }
+
