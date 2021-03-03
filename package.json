@@ -25,7 +25,7 @@
     "email-templates": "5.0.2",
     "nodemailer": "^4.7.0",
     "nodemailer-base64-to-s3": "0.0.4",
-    "pug": "^2.0.3",
+    "pug": "^3.0.1",
     "serverless-pseudo-parameters": "^2.4.0"
   },
   "devDependencies": {
