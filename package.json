@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/santiagovazquez/lambda-mailer#readme",
   "dependencies": {
-    "aws-sdk": "^2.361.0",
+    "aws-sdk": "^2.814.0",
     "email-templates": "5.0.2",
     "nodemailer": "^4.7.0",
     "nodemailer-base64-to-s3": "0.0.4",
