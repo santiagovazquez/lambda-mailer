@@ -31,7 +31,7 @@
   "devDependencies": {
     "js-yaml": "^3.13.1",
     "serverless": "^1.41.1",
-    "serverless-offline": "^4.9.4",
+    "serverless-offline": "^12.0.3",
     "serverless-offline-sns": "^0.53.0"
   }
 }
